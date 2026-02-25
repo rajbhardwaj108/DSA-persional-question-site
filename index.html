@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DSA Ultimate Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .progress-container {
+      background: #1e293b;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .progress-bar {
+      height: 20px;
+      background: #22c55e;
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    .topic {
+      background: #1e293b;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      padding: 15px;
+    }
+
+    .topic h2 {
+      margin: 0 0 10px;
+      cursor: pointer;
+    }
+
+    .questions {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .question {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .question input {
+      margin-right: 10px;
+    }
+
+    .topic-progress {
+      height: 8px;
+      background: #334155;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .topic-progress div {
+      height: 100%;
+      background: #38bdf8;
+      width: 0%;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📘 DSA Ultimate Question Tracker</h1>
+
+<div class="progress-container">
+  <div class="progress-bar" id="overallProgress"></div>
+</div>
+
+<div id="app"></div>
+
+<script>
+const data = [
+  {
+  topic: "Basics & Math",
+  questions: [
+    "Check if a number is prime",
+    "Print all prime numbers up to N",
+    "Find GCD (HCF) of two numbers",
+    "Find LCM of two numbers",
+    "Check if a number is even or odd",
+    "Count digits in a number",
+    "Reverse a number",
+    "Check if a number is palindrome",
+    "Check if a number is Armstrong",
+    "Find factorial of a number",
+    "Find factorial using recursion",
+    "Find Fibonacci number (iterative)",
+    "Find Fibonacci number (recursive)",
+    "Print Fibonacci series up to N",
+    "Sum of first N natural numbers",
+    "Sum of digits of a number",
+    "Check if a number is perfect number",
+    "Check if a number is strong number",
+    "Check if a number is automorphic",
+    "Find power of a number (x^n)",
+    "Fast exponentiation",
+    "Count trailing zeros in factorial",
+    "Find number of divisors of a number",
+    "Print all divisors of a number",
+    "Check if number is co-prime",
+    "Find modulo of large numbers",
+    "Modular exponentiation",
+    "Convert decimal to binary",
+    "Convert binary to decimal",
+    "Convert decimal to octal",
+    "Convert decimal to hexadecimal",
+    "Find nth root of a number",
+    "Check if number is a perfect square",
+    "Check if number is power of 2",
+    "Check if number is power of 3",
+    "Check if number is power of 4",
+    "Count set bits (basic)",
+    "Find LCM using GCD",
+    "Euclidean algorithm for GCD",
+    "Find last digit of a number",
+    "Find last digit of a^b",
+    "Sum of digits until single digit",
+    "Count trailing zeros in binary representation",
+    "Find XOR from 1 to N",
+    "Find missing number from 1 to N",
+    "Find repeating number in range",
+    "Swap two numbers without temp variable"
+  ]
+},
+  {
+  topic: "Bit Manipulation",
+  questions: [
+    "Check if a number is even or odd using bitwise operator",
+    "Check if a number is power of 2",
+    "Check if a number is power of 4",
+    "Find ith bit of a number",
+    "Set ith bit of a number",
+    "Clear ith bit of a number",
+    "Toggle ith bit of a number",
+    "Count number of set bits",
+    "Count set bits using Brian Kernighan’s algorithm",
+    "Find rightmost set bit",
+    "Find position of rightmost set bit",
+    "Unset the rightmost set bit",
+    "Check if a number has exactly one set bit",
+    "Swap two numbers using XOR",
+    "Find XOR of numbers from 1 to N",
+    "Find missing number using XOR",
+    "Find single number (all others appear twice)",
+    "Find single number (all others appear three times)",
+    "Find two non-repeating elements",
+    "Divide a number by 2 using bitwise operator",
+    "Multiply a number by 2 using bitwise operator",
+    "Check if ith bit is set or not",
+    "Convert lowercase character to uppercase using bits",
+    "Convert uppercase character to lowercase using bits",
+    "Clear last set bit",
+    "Find number of bits required to represent a number",
+    "Check if number is palindrome in binary",
+    "Reverse bits of a number",
+    "Bitwise AND of range",
+    "Bitwise OR of range",
+    "Bitwise XOR of range",
+    "Subset generation using bit masking",
+    "Generate all subsets of a set",
+    "Check if two numbers have opposite signs",
+    "Find minimum using bitwise operator",
+    "Find maximum using bitwise operator",
+    "Add two numbers without using + operator",
+    "Subtract two numbers without using - operator",
+    "Multiply two numbers using bit manipulation",
+    "Check if number is multiple of 3",
+    "Find parity of a number",
+    "Turn off Kth bit",
+    "Turn on Kth bit",
+    "Toggle bits in a given range"
+  ]
+},
+  {
+  topic: "Arrays",
+  questions: [
+    "Find maximum element in an array",
+    "Find minimum element in an array",
+    "Second largest element in an array",
+    "Second smallest element in an array",
+    "Check if array is sorted",
+    "Reverse an array",
+    "Reverse array in groups",
+    "Rotate array by K positions",
+    "Left rotate array by one",
+    "Right rotate array by one",
+    "Move all zeros to end",
+    "Move all zeros to beginning",
+    "Move all negative numbers to one side",
+    "Segregate even and odd numbers",
+    "Find missing number in array (1 to N)",
+    "Find duplicate number in array",
+    "Find all duplicates in array",
+    "Remove duplicates from sorted array",
+    "Remove duplicates from unsorted array",
+    "Union of two arrays",
+    "Intersection of two arrays",
+    "Find common elements in three sorted arrays",
+    "Kadane’s algorithm (maximum subarray sum)",
+    "Maximum circular subarray sum",
+    "Find subarray with given sum",
+    "Count subarrays with given sum",
+    "Longest subarray with sum K",
+    "Longest subarray with equal 0s and 1s",
+    "Two Sum problem",
+    "Three Sum problem",
+    "Four Sum problem",
+    "Merge two sorted arrays without extra space",
+    "Merge intervals",
+    "Sort array of 0s, 1s and 2s",
+    "Find majority element (Moore’s Voting)",
+    "Find elements appearing more than n/3 times",
+    "Rearrange array alternately positive and negative",
+    "Rearrange array in alternating max-min form",
+    "Stock buy and sell (one transaction)",
+    "Stock buy and sell (multiple transactions)",
+    "Stock buy and sell (at most two transactions)",
+    "Find leaders in an array",
+    "Trapping rain water",
+    "Container with most water",
+    "Maximum product subarray",
+    "Find equilibrium index",
+    "Product of array except self",
+    "Find minimum in rotated sorted array",
+    "Search in rotated sorted array",
+    "Find peak element",
+    "Count inversions in array",
+    "Find repeating and missing number",
+    "Chocolate distribution problem",
+    "Minimum jumps to reach end",
+    "Maximum sum increasing subsequence",
+    "Longest consecutive sequence",
+    "Smallest subarray with sum greater than X",
+    "Find kth largest element",
+    "Find kth smallest element",
+    "Check if array can be partitioned into equal sum",
+    "Split array into subarrays with equal sum",
+    "Maximum length subarray with equal elements",
+    "Count frequency of elements",
+    "Find majority element in sorted array",
+    "Find smallest missing positive number",
+    "Minimum swaps required to sort array"
+  ]
+},
+{
+  topic: "Matrix",
+  questions: [
+    "Print matrix row-wise",
+    "Print matrix column-wise",
+    "Print matrix in spiral order",
+    "Print matrix in reverse spiral order",
+    "Print matrix in zig-zag order",
+    "Print matrix in diagonal order",
+    "Print matrix in wave form",
+    "Print boundary elements of matrix",
+    "Print upper triangular matrix",
+    "Print lower triangular matrix",
+
+    "Transpose of a matrix",
+    "In-place transpose of square matrix",
+    "Rotate matrix by 90 degrees clockwise",
+    "Rotate matrix by 90 degrees anti-clockwise",
+    "Rotate matrix by 180 degrees",
+    "Rotate matrix by 270 degrees",
+    "Mirror a matrix horizontally",
+    "Mirror a matrix vertically",
+    "Check if matrix is symmetric",
+    "Check if matrix is skew symmetric",
+    "Check if matrix is identity matrix",
+    "Check if matrix is diagonal matrix",
+    "Check if matrix is sparse matrix",
+    "Check if matrix is Toeplitz matrix",
+
+    "Search an element in matrix",
+    "Search in row-wise sorted matrix",
+    "Search in row-wise and column-wise sorted matrix",
+    "Binary search in 2D matrix",
+    "Find median in row-wise sorted matrix",
+    "Find row with maximum number of 1s",
+    "Find column with maximum number of 0s",
+    "Find common elements in all rows",
+
+    "Find sum of all elements in matrix",
+    "Find sum of each row and column",
+    "Find sum of diagonals of matrix",
+    "Prefix sum matrix",
+    "2D prefix sum queries",
+    "Difference matrix technique",
+    "Submatrix sum queries",
+    "Maximum sum submatrix",
+    "Submatrix with given sum",
+    "Maximum sum rectangle in matrix",
+
+    "Boolean matrix problem",
+    "Set matrix zeroes",
+    "Replace all 0s with 1s if surrounded by 1s",
+    "Rotate matrix ring-wise",
+    "Spiral matrix II (generate spiral)",
+    "Check if matrix is palindrome row-wise",
+    "Check if matrix is palindrome column-wise",
+
+    "Flood fill algorithm",
+    "Number of islands",
+    "Largest island in matrix",
+    "Count connected components in matrix",
+    "Unique paths in grid",
+    "Unique paths with obstacles",
+    "Minimum cost path in matrix",
+    "Count paths in matrix",
+    "Maximum size square submatrix of 1s",
+    "Largest rectangle of 1s in a matrix"
+  ]
+},
+  {
+  topic: "Searching & Sorting",
+  questions: [
+    "Linear search in array",
+    "Binary search (iterative)",
+    "Binary search (recursive)",
+    "Find first occurrence of element",
+    "Find last occurrence of element",
+    "Count occurrences of element in sorted array",
+    "Find floor of an element in sorted array",
+    "Find ceil of an element in sorted array",
+    "Find smallest element greater than target",
+    "Find largest element smaller than target",
+    "Lower bound implementation",
+    "Upper bound implementation",
+    "Find position of element in infinite sorted array",
+    "Search in rotated sorted array",
+    "Find minimum in rotated sorted array",
+    "Search element in nearly sorted array",
+    "Search in bitonic array",
+    "Find peak element",
+    "Find element in matrix using binary search",
+    "Search in row-wise and column-wise sorted matrix",
+
+    "Bubble sort",
+    "Selection sort",
+    "Insertion sort",
+    "Merge sort",
+    "Quick sort",
+    "Heap sort",
+    "Counting sort",
+    "Radix sort",
+    "Bucket sort",
+    "Shell sort",
+
+    "Sort array of 0s, 1s and 2s",
+    "Sort array according to parity",
+    "Sort array by frequency",
+    "Sort array according to another array",
+    "Sort array of absolute differences",
+    "Sort array of strings lexicographically",
+    "Sort strings by length",
+    "Custom comparator sorting",
+
+    "Find kth smallest element",
+    "Find kth largest element",
+    "Median of two sorted arrays",
+    "Find minimum difference pair",
+    "Aggressive cows problem",
+    "Book allocation problem",
+    "Painter’s partition problem",
+    "Allocate minimum number of pages",
+    "Capacity to ship packages within D days",
+    "Koko eating bananas",
+    "Minimum time to complete tasks",
+    "Search in answer space (binary search on answer)",
+
+    "Check if array can be sorted with one swap",
+    "Find majority element in sorted array",
+    "Count inversions in array using merge sort",
+    "Find pair with given difference",
+    "Find triplet with given sum",
+    "Check if two arrays are equal after sorting"
+  ]
+},
+  {
+  topic: "Strings",
+  questions: [
+    "Reverse a string",
+    "Check if string is palindrome",
+    "Check if string is anagram",
+    "Check if two strings are rotations of each other",
+    "Find length of string without using length function",
+    "Count vowels and consonants in string",
+    "Remove vowels from string",
+    "Remove spaces from string",
+    "Remove duplicate characters from string",
+    "Find first non-repeating character",
+    "Find first repeating character",
+    "Count frequency of characters",
+    "Sort characters of string",
+    "Convert string to uppercase",
+    "Convert string to lowercase",
+    "Toggle case of characters",
+    "Find longest common prefix",
+    "Check if string contains only digits",
+    "Check if string contains only alphabets",
+    "Check if string contains special characters",
+
+    "Reverse words in a string",
+    "Check if sentence is palindrome",
+    "Find longest word in a sentence",
+    "Count words in a string",
+    "Remove extra spaces from string",
+    "Find longest palindrome substring",
+    "Count palindromic substrings",
+    "Longest substring without repeating characters",
+    "Longest substring with at most K distinct characters",
+    "Smallest window containing all characters of another string",
+    "Minimum window substring",
+
+    "String matching using brute force",
+    "Rabin Karp algorithm",
+    "KMP (Knuth Morris Pratt) algorithm",
+    "Z algorithm",
+    "Check if string is subsequence of another",
+    "Check if string is substring of another",
+    "Count occurrences of substring",
+    "Find all anagrams in a string",
+
+    "Valid parentheses string",
+    "Remove outermost parentheses",
+    "Longest valid parentheses",
+    "Generate all balanced parentheses",
+
+    "Check if string can be rearranged to palindrome",
+    "String compression",
+    "Compare version numbers",
+    "Roman to integer",
+    "Integer to Roman",
+    "Multiply strings",
+    "Add strings",
+    "Longest repeating character replacement",
+    "Group anagrams",
+    "Decode string"
+  ]
+},
+  {
+  topic: "Recursion & Backtracking",
+  questions: [
+    "Print numbers from 1 to N using recursion",
+    "Print numbers from N to 1 using recursion",
+    "Find factorial using recursion",
+    "Find nth Fibonacci number using recursion",
+    "Check if array is sorted using recursion",
+    "Sum of elements in array using recursion",
+    "Reverse a string using recursion",
+    "Check if string is palindrome using recursion",
+    "Power of a number using recursion",
+    "Count digits of a number using recursion",
+
+    "Generate all subsets of a string",
+    "Generate all subsequences of a string",
+    "Generate all permutations of a string",
+    "Generate permutations of array",
+    "Generate all combinations",
+    "Combination Sum",
+    "Combination Sum II",
+    "Subset Sum problem",
+    "Subset Sum equals K",
+    "Print all subsets with given sum",
+
+    "Tower of Hanoi",
+    "Josephus problem",
+    "Rat in a maze",
+    "N-Queens problem",
+    "Sudoku solver",
+    "Word search",
+    "Palindrome partitioning",
+    "Letter combinations of phone number",
+    "Restore IP addresses",
+    "Generate parentheses",
+
+    "Backtracking on matrix paths",
+    "Count paths in a maze",
+    "Find all paths in a grid",
+    "Permutations with duplicates",
+    "Combinations with duplicates",
+
+    "K-th permutation sequence",
+    "Gray code generation",
+    "Solve crossword puzzle",
+    "M-coloring problem",
+    "Hamiltonian path problem",
+
+    "Backtracking vs recursion difference",
+    "Tail recursion",
+    "Memoization basics"
+  ]
+},
+  {
+  topic: "Linked List",
+  questions: [
+    "Create a singly linked list",
+    "Traverse a linked list",
+    "Find length of linked list",
+    "Search an element in linked list",
+    "Insert at beginning of linked list",
+    "Insert at end of linked list",
+    "Insert at given position",
+    "Delete first node of linked list",
+    "Delete last node of linked list",
+    "Delete node at given position",
+    "Delete a node without head pointer",
+    "Reverse a linked list (iterative)",
+    "Reverse a linked list (recursive)",
+    "Reverse linked list in groups of K",
+    "Find middle of linked list",
+    "Find nth node from end",
+    "Detect loop in linked list",
+    "Remove loop in linked list",
+    "Length of loop in linked list",
+    "Find starting point of loop",
+    "Check if linked list is palindrome",
+    "Intersection point of two linked lists",
+    "Merge two sorted linked lists",
+    "Sort a linked list",
+    "Remove duplicates from sorted linked list",
+    "Remove duplicates from unsorted linked list",
+    "Segregate even and odd nodes",
+    "Swap nodes in pairs",
+    "Pairwise swap nodes",
+    "Add two numbers represented by linked lists",
+    "Subtract two numbers represented by linked lists",
+    "Multiply two numbers represented by linked lists",
+    "Rotate linked list",
+    "Reorder linked list",
+    "Flatten a linked list",
+    "Clone a linked list with random pointer",
+    "Delete nodes having greater value on right",
+    "Move last element to front",
+    "Check if circular linked list",
+    "Split circular linked list into two halves",
+    "Reverse circular linked list",
+    "Create a doubly linked list",
+    "Insert in doubly linked list",
+    "Delete in doubly linked list",
+    "Reverse doubly linked list",
+    "LRU cache using linked list",
+    "Design browser history",
+    "Implement stack using linked list",
+    "Implement queue using linked list",
+    "Merge K sorted linked lists",
+    "Sort linked list using merge sort",
+    "Odd even linked list",
+    "Remove zero sum consecutive nodes"
+  ]
+},
+  {
+  topic: "Stack & Queue",
+  questions: [
+    "Implement stack using array",
+    "Implement stack using linked list",
+    "Implement queue using array",
+    "Implement queue using linked list",
+    "Implement circular queue",
+    "Implement deque",
+
+    "Push operation in stack",
+    "Pop operation in stack",
+    "Peek operation in stack",
+    "Check if stack is empty",
+    "Check if stack is full",
+
+    "Reverse a stack",
+    "Sort a stack",
+    "Delete middle element of stack",
+    "Implement two stacks in an array",
+    "Min stack implementation",
+    "Design stack that supports getMin in O(1)",
+
+    "Next greater element",
+    "Next smaller element",
+    "Previous greater element",
+    "Previous smaller element",
+    "Stock span problem",
+    "Largest rectangle in histogram",
+    "Max rectangle in binary matrix",
+    "Trapping rain water using stack",
+
+    "Check for balanced parentheses",
+    "Longest valid parentheses",
+    "Remove invalid parentheses",
+    "Evaluate postfix expression",
+    "Evaluate prefix expression",
+    "Convert infix to postfix",
+    "Convert infix to prefix",
+    "Convert postfix to infix",
+    "Convert prefix to infix",
+
+    "Implement queue using two stacks",
+    "Implement stack using two queues",
+    "LRU cache implementation",
+    "Sliding window maximum",
+    "First negative integer in every window of size K",
+    "Sum of minimum and maximum elements of all subarrays",
+
+    "Design circular deque",
+    "Implement priority queue",
+    "Queue using priority queue",
+    "Stack using priority queue",
+    "Rotten oranges problem",
+    "Interleave first half of queue with second half",
+    "Reverse first K elements of queue",
+    "Generate binary numbers from 1 to N using queue"
+  ]
+},
+  {
+  topic: "Trees & BST",
+  questions: [
+    "Create a binary tree",
+    "Preorder traversal (recursive)",
+    "Inorder traversal (recursive)",
+    "Postorder traversal (recursive)",
+    "Preorder traversal (iterative)",
+    "Inorder traversal (iterative)",
+    "Postorder traversal (iterative)",
+    "Level order traversal",
+    "Reverse level order traversal",
+    "Zigzag level order traversal",
+
+    "Height of binary tree",
+    "Diameter of binary tree",
+    "Check if binary tree is balanced",
+    "Check if binary tree is symmetric",
+    "Check if binary tree is identical",
+    "Check if binary tree is complete",
+    "Check if binary tree is full",
+    "Check if binary tree is perfect",
+    "Lowest common ancestor in binary tree",
+    "Lowest common ancestor in BST",
+
+    "Print left view of binary tree",
+    "Print right view of binary tree",
+    "Print top view of binary tree",
+    "Print bottom view of binary tree",
+    "Print boundary traversal of binary tree",
+
+    "Maximum depth of binary tree",
+    "Minimum depth of binary tree",
+    "Count total nodes in binary tree",
+    "Count leaf nodes",
+    "Sum of all nodes",
+    "Check if tree is sum tree",
+    "Convert binary tree to sum tree",
+
+    "Mirror a binary tree",
+    "Flatten binary tree to linked list",
+    "Serialize and deserialize binary tree",
+    "Construct binary tree from inorder and preorder",
+    "Construct binary tree from inorder and postorder",
+
+    "Binary Search Tree insertion",
+    "Binary Search Tree deletion",
+    "Search in Binary Search Tree",
+    "Check if binary tree is BST",
+    "Find minimum value in BST",
+    "Find maximum value in BST",
+    "Find inorder successor in BST",
+    "Find inorder predecessor in BST",
+    "Kth smallest element in BST",
+    "Kth largest element in BST",
+
+    "Convert sorted array to BST",
+    "Convert BST to sorted array",
+    "Convert binary tree to BST",
+    "Find floor and ceil in BST",
+    "Recover BST with two swapped nodes",
+
+    "Burning tree problem",
+    "Distance between two nodes in binary tree",
+    "Vertical order traversal",
+    "Diagonal traversal of binary tree",
+    "Maximum path sum in binary tree",
+    "Count number of BSTs",
+    "Unique Binary Search Trees"
+  ]
+},
+{
+  topic: "Trie (Prefix Tree)",
+  questions: [
+    "Introduction to Trie data structure",
+    "Implement Trie (insert, search, startsWith)",
+    "Search word in Trie",
+    "Delete a word from Trie",
+    "Count number of words in Trie",
+    "Count number of words with given prefix",
+    "Check if a word exists in Trie",
+    "Longest common prefix using Trie",
+    "Auto-complete system using Trie",
+    "Spell checker using Trie",
+    "Word dictionary with wildcard search",
+    "Replace words using Trie",
+    "Maximum XOR of two numbers in an array",
+    "Maximum XOR with Trie",
+    "Find minimum XOR pair",
+    "Binary Trie implementation",
+    "Count distinct substrings using Trie",
+    "Longest word in dictionary",
+    "Search suggestions system",
+    "Stream of characters (online Trie problem)",
+    "Phone directory problem",
+    "Word break problem using Trie",
+    "Concatenated words",
+    "Prefix and suffix search",
+    "Design add and search data structure",
+    "Implement Trie using array",
+    "Implement Trie using hashmap",
+    "Memory optimized Trie",
+    "Delete leaf nodes in Trie",
+    "Find lexicographically smallest string in Trie"
+  ]
+},
+  {
+  topic: "Graphs",
+  questions: [
+    "Graph representation using adjacency list",
+    "Graph representation using adjacency matrix",
+    "Add edge to graph",
+    "BFS traversal of graph",
+    "DFS traversal of graph (recursive)",
+    "DFS traversal of graph (iterative)",
+    "Detect cycle in undirected graph",
+    "Detect cycle in directed graph",
+    "Check if graph is bipartite",
+    "Find connected components in graph",
+
+    "Topological sort using DFS",
+    "Topological sort using BFS (Kahn’s algorithm)",
+    "Detect cycle using topological sort",
+    "Shortest path in unweighted graph",
+    "Shortest path in weighted graph",
+    "Dijkstra’s algorithm",
+    "Bellman Ford algorithm",
+    "Floyd Warshall algorithm",
+    "Find all-pairs shortest path",
+    "Shortest path in DAG",
+
+    "Minimum spanning tree using Prim’s algorithm",
+    "Minimum spanning tree using Kruskal’s algorithm",
+    "Disjoint set (Union Find)",
+    "Union by rank",
+    "Path compression",
+
+    "Find number of islands",
+    "Flood fill algorithm",
+    "Rotten oranges problem",
+    "Knight’s tour problem",
+    "Shortest path in binary matrix",
+    "Number of distinct islands",
+    "Surrounded regions problem",
+    "Count connected components in grid",
+    "Detect cycle in grid",
+
+    "Word ladder",
+    "Alien dictionary",
+    "Course schedule",
+    "Course schedule II",
+    "Find if path exists between two vertices",
+    "Minimum edges to reverse to make path",
+    "Cheapest flight within K stops",
+
+    "Mother vertex in graph",
+    "Articulation points",
+    "Bridges in graph",
+    "Strongly connected components (Kosaraju)",
+    "Strongly connected components (Tarjan)",
+    "Eulerian path and circuit",
+    "Hamiltonian path and cycle",
+
+    "Clone a graph",
+    "Graph coloring problem",
+    "M-coloring problem",
+    "Check if graph is tree",
+    "Minimum time to collect all apples",
+    "Critical connections in network",
+    "Network delay time",
+    "Find eventual safe states",
+    "Maximum probability path",
+    "Reconstruct itinerary"
+  ]
+},
+  {
+  topic: "Dynamic Programming",
+  questions: [
+    "Introduction to dynamic programming",
+    "Memoization vs tabulation",
+    "Identify DP problems",
+    "Climbing stairs problem",
+    "Fibonacci using DP",
+    "House robber problem",
+    "House robber II",
+    "Maximum sum of non-adjacent elements",
+    "Minimum cost climbing stairs",
+    "Decode ways",
+
+    "0/1 Knapsack problem",
+    "Subset sum problem",
+    "Equal sum partition",
+    "Count subsets with given sum",
+    "Minimum subset sum difference",
+    "Target sum problem",
+    "Unbounded knapsack",
+    "Rod cutting problem",
+    "Coin change (minimum coins)",
+    "Coin change (number of ways)",
+
+    "Longest common subsequence",
+    "Longest common substring",
+    "Shortest common supersequence",
+    "Edit distance",
+    "Longest repeating subsequence",
+    "Sequence pattern matching",
+    "Minimum insertions and deletions",
+    "Longest palindromic subsequence",
+    "Count palindromic subsequences",
+    "Minimum insertions to make string palindrome",
+
+    "Longest increasing subsequence",
+    "Longest decreasing subsequence",
+    "Maximum sum increasing subsequence",
+    "Longest bitonic subsequence",
+    "Russian doll envelopes",
+    "Number of LIS",
+
+    "Matrix chain multiplication",
+    "Minimum cost to cut a stick",
+    "Palindrome partitioning II",
+    "Boolean parenthesization",
+    "Burst balloons",
+    "Egg dropping problem",
+
+    "Unique paths",
+    "Unique paths II",
+    "Minimum path sum in grid",
+    "Maximum path sum in matrix",
+    "Cherry pickup",
+
+    "DP on trees",
+    "Tree diameter using DP",
+    "Maximum path sum in binary tree",
+    "Count BSTs",
+    "Unique BSTs",
+
+    "Word break problem",
+    "Wildcard pattern matching",
+    "Regular expression matching",
+
+    "Stock buy and sell (DP)",
+    "Stock buy and sell with cooldown",
+    "Stock buy and sell with transaction fee",
+    "Best time to buy and sell stock IV",
+
+    "Partition array for maximum sum",
+    "Count square submatrices with all ones",
+    "Longest valid parentheses using DP",
+    "Interleaving string",
+    "Minimum number of jumps to reach end",
+    "Maximum sum rectangle in matrix"
+  ]
+},
+{
+  topic: "Miscellaneous (Must-Have)",
+  questions: [
+    "Time and space complexity analysis of algorithms",
+    "Big O, Big Omega, Big Theta notation",
+    "Best case, worst case and average case analysis",
+    "Amortized analysis",
+    "Bitwise tricks for optimization",
+
+    "Two pointers technique",
+    "Sliding window technique",
+    "Prefix sum technique",
+    "Difference array technique",
+    "Hashing basics",
+    "Custom hashing",
+    "Collision handling in hashing",
+
+    "Greedy algorithm basics",
+    "Activity selection problem",
+    "Job sequencing problem",
+    "Fractional knapsack",
+    "Minimum number of platforms",
+    "Gas station problem",
+    "Candy distribution problem",
+
+    "Recursion vs iteration comparison",
+    "Tail recursion optimization",
+    "Memoization vs tabulation (deep dive)",
+    "State definition in DP",
+    "DP optimization techniques",
+
+    "Disjoint set union applications",
+    "Offline queries using DSU",
+    "Union find with path compression",
+
+    "Monotonic stack pattern",
+    "Monotonic queue pattern",
+    "Sliding window with deque",
+
+    "Binary lifting concept",
+    "Lowest common ancestor using binary lifting",
+    "Sparse table concept",
+    "Range minimum query",
+    "Range sum query",
+
+    "Meet in the middle technique",
+    "Bitmask DP",
+    "State compression DP",
+
+    "Randomized algorithms",
+    "Reservoir sampling",
+    "Fisher–Yates shuffle",
+
+    "Design a cache system",
+    "Design rate limiter",
+    "Design URL shortener (logic)",
+    "Design autocomplete system",
+
+    "Handling large input efficiently",
+    "Fast input/output techniques",
+    "Integer overflow handling",
+    "Floating point precision issues",
+
+    "Edge cases in DSA problems",
+    "How to debug TLE",
+    "How to debug MLE",
+    "How to optimize brute force solutions",
+
+    "Competitive programming tricks",
+    "Common interview pitfalls",
+    "How to approach unseen problems",
+    "Pattern recognition in DSA problems"
+  ]
+}
+
+];
+
+const app = document.getElementById("app");
+
+function saveState(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function loadState(key, def) {
+  return JSON.parse(localStorage.getItem(key)) ?? def;
+}
+
+function render() {
+  app.innerHTML = "";
+  let total = 0, done = 0;
+
+  data.forEach((section, tIndex) => {
+    const div = document.createElement("div");
+    div.className = "topic";
+
+    const title = document.createElement("h2");
+    title.textContent = section.topic;
+    div.appendChild(title);
+
+    const list = document.createElement("div");
+    list.className = "questions";
+
+    const state = loadState(section.topic, []);
+
+    section.questions.forEach((q, qIndex) => {
+      total++;
+      const checked = state.includes(qIndex);
+      if (checked) done++;
+
+      const item = document.createElement("div");
+      item.className = "question";
+
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = checked;
+
+      cb.onchange = () => {
+        const newState = loadState(section.topic, []);
+        if (cb.checked) newState.push(qIndex);
+        else newState.splice(newState.indexOf(qIndex), 1);
+        saveState(section.topic, newState);
+        render();
+      };
+
+      item.appendChild(cb);
+      item.appendChild(document.createTextNode(q));
+      list.appendChild(item);
+    });
+
+    title.onclick = () => {
+      list.style.display = list.style.display === "none" ? "block" : "none";
+    };
+
+    const prog = document.createElement("div");
+    prog.className = "topic-progress";
+    const bar = document.createElement("div");
+
+    const percent = section.questions.length
+      ? (state.length / section.questions.length) * 100
+      : 0;
+
+    bar.style.width = percent + "%";
+    prog.appendChild(bar);
+
+    div.appendChild(prog);
+    div.appendChild(list);
+    app.appendChild(div);
+  });
+
+  document.getElementById("overallProgress").style.width =
+    total ? (done / total) * 100 + "%" : "0%";
+}
+
+render();
+</script>
+
+</body>
+</html>
